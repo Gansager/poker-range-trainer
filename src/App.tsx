@@ -10,6 +10,7 @@ import { ActionPalette } from './components/ActionPalette'
 import { CheckBar } from './components/CheckBar'
 import { ResultSummary } from './components/ResultSummary'
 import { EditorPanel } from './components/EditorPanel'
+import { ChartReference } from './components/ChartReference'
 
 type Mode = 'train' | 'edit'
 
@@ -141,6 +142,7 @@ export default function App() {
           {category.name} — {spot.name}
           {mode === 'edit' && <span className="spot-title__badge">редактирование</span>}
           {mode === 'train' && showAnswer && <span className="spot-title__badge">эталон</span>}
+          <ChartReference categoryId={category.id} categoryName={category.name} />
         </h2>
 
         <ActionPalette

@@ -196,6 +196,80 @@ body {
   padding: 3px 9px;
 }
 
+/* Кнопка «Чарт» в заголовке */
+.chartref-btn {
+  margin-left: auto;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.chartref-btn:hover {
+  border-color: var(--accent);
+}
+
+/* Лайтбокс с чартом */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(6, 8, 12, 0.88);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(2px);
+}
+.lightbox__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.lightbox__title {
+  font-size: 14px;
+  font-weight: 700;
+}
+.lightbox__open {
+  color: var(--accent-2);
+  font-size: 13px;
+  text-decoration: none;
+}
+.lightbox__open:hover {
+  text-decoration: underline;
+}
+.lightbox__close {
+  margin-left: auto;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.lightbox__scroll {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 16px;
+  -webkit-overflow-scrolling: touch;
+}
+.lightbox__img {
+  max-width: none;
+  width: min(1900px, 180vw);
+  height: auto;
+  border-radius: 8px;
+}
+
 /* ───────── Matrix ───────── */
 .matrix {
   display: grid;
