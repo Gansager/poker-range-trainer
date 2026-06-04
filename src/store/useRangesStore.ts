@@ -31,8 +31,17 @@ function mapCategory(data: RangesData, catId: string, fn: (c: Category) => Categ
   return { ...data, categories: data.categories.map((c) => (c.id === catId ? fn(c) : c)) }
 }
 
+/** Именованный снимок всех диапазонов (профиль сохранения). */
+export interface Snapshot {
+  id: string
+  name: string
+  savedAt: number
+  data: RangesData
+}
+
 interface RangesState {
   data: RangesData
+  snapshots: Snapshot[]
 
   updateCell: (catId: string, spotId: string, handId: string, freq: Frequency) => void
   setSpotMatrix: (catId: string, spotId: string, matrix: Matrix) => void
@@ -44,14 +53,21 @@ interface RangesState {
 
   importData: (data: RangesData) => void
   resetToSeed: () => void
+
+  // Снимки (профили)
+  saveSnapshot: (name: string) => void
+  loadSnapshot: (id: string) => void
+  deleteSnapshot: (id: string) => void
 }
 
 let spotCounter = 0
+let snapshotCounter = 0
 
 export const useRangesStore = create<RangesState>()(
   persist(
     (set) => ({
       data: seedData(),
+      snapshots: [],
 
       updateCell: (catId, spotId, handId, freq) =>
         set((st) => ({
@@ -96,6 +112,28 @@ export const useRangesStore = create<RangesState>()(
 
       importData: (data) => set({ data }),
       resetToSeed: () => set({ data: seedData() }),
+
+      saveSnapshot: (name) =>
+        set((st) => ({
+          snapshots: [
+            ...st.snapshots,
+            {
+              id: `snap-${Date.now()}-${++snapshotCounter}`,
+              name: name.trim() || `Снимок ${st.snapshots.length + 1}`,
+              savedAt: Date.now(),
+              data: structuredClone(st.data),
+            },
+          ],
+        })),
+
+      loadSnapshot: (id) =>
+        set((st) => {
+          const snap = st.snapshots.find((s) => s.id === id)
+          return snap ? { data: structuredClone(snap.data) } : {}
+        }),
+
+      deleteSnapshot: (id) =>
+        set((st) => ({ snapshots: st.snapshots.filter((s) => s.id !== id) })),
     }),
     {
       name: STORAGE_KEY,

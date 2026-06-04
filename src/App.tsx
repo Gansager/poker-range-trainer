@@ -114,6 +114,9 @@ export default function App() {
     <div className="app">
       <header className="app__header">
         <h1>Poker Range Trainer</h1>
+        <span className="app__save" title="Все правки автоматически сохраняются в этом браузере (localStorage)">
+          💾 Автосохранение
+        </span>
         <div className="modes">
           <button
             className={`mode ${mode === 'train' ? 'mode--active' : ''}`}

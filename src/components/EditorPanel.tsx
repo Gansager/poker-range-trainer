@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import type { RangesData, Spot } from '../domain/types'
 import { useRangesStore } from '../store/useRangesStore'
 
@@ -11,15 +11,33 @@ interface EditorPanelProps {
 /** Панель редактора: заметки, управление спотами, импорт/экспорт, сброс. */
 export function EditorPanel({ categoryId, spot, onSpotsChanged }: EditorPanelProps) {
   const fileRef = useRef<HTMLInputElement>(null)
+  const [snapName, setSnapName] = useState('')
   const {
     data,
+    snapshots,
     setSpotNotes,
     addSpot,
     renameSpot,
     deleteSpot,
     importData,
     resetToSeed,
+    saveSnapshot,
+    loadSnapshot,
+    deleteSnapshot,
   } = useRangesStore()
+
+  function handleSaveSnapshot() {
+    const name = snapName.trim() || new Date().toLocaleString('ru-RU')
+    saveSnapshot(name)
+    setSnapName('')
+  }
+
+  function handleLoadSnapshot(id: string, name: string) {
+    if (window.confirm(`Загрузить снимок «${name}»? Текущие несохранённые правки заменятся.`)) {
+      loadSnapshot(id)
+      onSpotsChanged(null)
+    }
+  }
 
   function handleAdd() {
     const name = window.prompt('Название нового спота:')?.trim()
@@ -104,6 +122,55 @@ export function EditorPanel({ categoryId, spot, onSpotsChanged }: EditorPanelPro
         >
           Сброс к образцам
         </button>
+      </div>
+
+      <div className="snapshots">
+        <div className="snapshots__head">
+          <span className="snapshots__title">Снимки (профили)</span>
+          <span className="snapshots__hint">
+            Сохраняйте версии диапазонов — хранятся в браузере между сессиями
+          </span>
+        </div>
+        <div className="snapshots__save">
+          <input
+            className="snapshots__input"
+            type="text"
+            value={snapName}
+            placeholder="Название снимка…"
+            onChange={(e) => setSnapName(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSaveSnapshot()}
+          />
+          <button className="btn btn--primary" onClick={handleSaveSnapshot}>
+            Сохранить снимок
+          </button>
+        </div>
+
+        {snapshots.length === 0 ? (
+          <p className="snapshots__empty">Пока нет сохранённых снимков.</p>
+        ) : (
+          <ul className="snapshots__list">
+            {snapshots
+              .slice()
+              .reverse()
+              .map((s) => (
+                <li key={s.id} className="snapshots__item">
+                  <span className="snapshots__name">{s.name}</span>
+                  <span className="snapshots__date">
+                    {new Date(s.savedAt).toLocaleString('ru-RU')}
+                  </span>
+                  <button className="chip" onClick={() => handleLoadSnapshot(s.id, s.name)}>
+                    Загрузить
+                  </button>
+                  <button
+                    className="chip"
+                    onClick={() => window.confirm(`Удалить снимок «${s.name}»?`) && deleteSnapshot(s.id)}
+                  >
+                    ✕
+                  </button>
+                </li>
+              ))}
+          </ul>
+        )}
       </div>
     </div>
   )
