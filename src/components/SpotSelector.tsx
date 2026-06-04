@@ -1,4 +1,5 @@
 import type { Spot } from '../domain/types'
+import { useHorizontalWheel } from '../hooks/useHorizontalWheel'
 
 interface SpotSelectorProps {
   spots: Spot[]
@@ -8,8 +9,9 @@ interface SpotSelectorProps {
 
 /** Кнопки выбора спота внутри категории. */
 export function SpotSelector({ spots, activeId, onSelect }: SpotSelectorProps) {
+  const ref = useHorizontalWheel<HTMLDivElement>()
   return (
-    <div className="spots">
+    <div className="spots" ref={ref}>
       {spots.map((spot) => (
         <button
           key={spot.id}

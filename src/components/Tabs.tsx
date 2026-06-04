@@ -1,4 +1,5 @@
 import type { Category } from '../domain/types'
+import { useHorizontalWheel } from '../hooks/useHorizontalWheel'
 
 interface TabsProps {
   categories: Category[]
@@ -8,8 +9,9 @@ interface TabsProps {
 
 /** Верхние табы категорий. */
 export function Tabs({ categories, activeId, onSelect }: TabsProps) {
+  const ref = useHorizontalWheel<HTMLElement>()
   return (
-    <nav className="tabs">
+    <nav className="tabs" ref={ref}>
       {categories.map((cat) => (
         <button
           key={cat.id}
