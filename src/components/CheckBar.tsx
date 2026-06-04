@@ -25,13 +25,13 @@ export function CheckBar({
         Reset
       </button>
       <button className="btn" onClick={onToggleAnswer} disabled={!hasReference}>
-        {showAnswer ? 'Скрыть ответ' : 'Показать ответ'}
+        {showAnswer ? 'Hide answer' : 'Show answer'}
       </button>
       {!hasReference && (
-        <span className="checkbar__hint">Для этого спота ещё нет эталона</span>
+        <span className="checkbar__hint">No reference for this spot yet</span>
       )}
       {checked && !showAnswer && (
-        <span className="checkbar__hint">Проверено — см. подсветку ошибок</span>
+        <span className="checkbar__hint">Checked — see highlighted mistakes</span>
       )}
     </div>
   )

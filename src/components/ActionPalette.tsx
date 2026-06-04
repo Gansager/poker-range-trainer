@@ -37,7 +37,7 @@ export function ActionPalette({ actions, active, onChange, freq, onFreqChange }:
               key={id}
               className={`palette__btn ${id === active ? 'palette__btn--active' : ''}`}
               onClick={() => onChange(id)}
-              title={`Горячая клавиша: ${i + 1}`}
+              title={`Hotkey: ${i + 1}`}
             >
               <span className="palette__swatch" style={{ background: def.color }} />
               {def.label}
@@ -48,7 +48,7 @@ export function ActionPalette({ actions, active, onChange, freq, onFreqChange }:
       </div>
 
       <div className="palette__freq">
-        <span className="palette__freq-label">Частота: {freq}%</span>
+        <span className="palette__freq-label">Frequency: {freq}%</span>
         <input
           type="range"
           min={0}

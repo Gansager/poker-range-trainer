@@ -116,21 +116,21 @@ export default function App() {
     <div className="app">
       <header className="app__header">
         <h1>Poker Range Trainer</h1>
-        <span className="app__save" title="Все правки автоматически сохраняются в этом браузере (localStorage)">
-          💾 Автосохранение
+        <span className="app__save" title="All edits are saved automatically in this browser (localStorage)">
+          💾 Auto-saved
         </span>
         <div className="modes">
           <button
             className={`mode ${mode === 'train' ? 'mode--active' : ''}`}
             onClick={() => setMode('train')}
           >
-            Тренировка
+            Training
           </button>
           <button
             className={`mode ${mode === 'edit' ? 'mode--active' : ''}`}
             onClick={() => setMode('edit')}
           >
-            Редактор
+            Editor
           </button>
         </div>
       </header>
@@ -141,8 +141,8 @@ export default function App() {
       <main className="app__main">
         <h2 className="spot-title">
           {category.name} — {spot.name}
-          {mode === 'edit' && <span className="spot-title__badge">редактирование</span>}
-          {mode === 'train' && showAnswer && <span className="spot-title__badge">эталон</span>}
+          {mode === 'edit' && <span className="spot-title__badge">editing</span>}
+          {mode === 'train' && showAnswer && <span className="spot-title__badge">answer</span>}
           <ChartReference categoryId={category.id} categoryName={category.name} />
         </h2>
 
@@ -169,22 +169,22 @@ export default function App() {
         {mode === 'train' ? (
           <>
             <div className="grademode">
-              <span>Режим:</span>
+              <span>Mode:</span>
               <button
                 className={`chip ${gradeMode === 'A' ? 'chip--active' : ''}`}
                 onClick={() => setGradeMode('A')}
               >
-                Действие
+                Action
               </button>
               <button
                 className={`chip ${gradeMode === 'B' ? 'chip--active' : ''}`}
                 onClick={() => setGradeMode('B')}
               >
-                Частоты
+                Frequencies
               </button>
               {gradeMode === 'B' && (
                 <label className="grademode__tol">
-                  допуск ±{tolerance}%
+                  tolerance ±{tolerance}%
                   <input
                     type="range"
                     min={0}

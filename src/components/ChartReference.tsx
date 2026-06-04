@@ -14,14 +14,14 @@ export function ChartReference({ categoryId, categoryName }: ChartReferenceProps
 
   return (
     <>
-      <button className="chartref-btn" onClick={() => setOpen(true)} title="Показать оригинальный чарт">
-        📊 Чарт
+      <button className="chartref-btn" onClick={() => setOpen(true)} title="Show original chart">
+        📊 Chart
       </button>
 
       {open && (
         <div className="lightbox" onClick={() => setOpen(false)}>
           <div className="lightbox__bar">
-            <span className="lightbox__title">Эталонный чарт — {categoryName}</span>
+            <span className="lightbox__title">Reference chart — {categoryName}</span>
             <a
               className="lightbox__open"
               href={url}
@@ -29,14 +29,14 @@ export function ChartReference({ categoryId, categoryName }: ChartReferenceProps
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
             >
-              Открыть оригинал ↗
+              Open original ↗
             </a>
             <button className="lightbox__close" onClick={() => setOpen(false)}>
               ✕
             </button>
           </div>
           <div className="lightbox__scroll" onClick={(e) => e.stopPropagation()}>
-            <img className="lightbox__img" src={url} alt={`Чарт: ${categoryName}`} />
+            <img className="lightbox__img" src={url} alt={`Chart: ${categoryName}`} />
           </div>
         </div>
       )}

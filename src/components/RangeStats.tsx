@@ -15,9 +15,9 @@ export function RangeStats({ matrix }: RangeStatsProps) {
   return (
     <div className="rangestats">
       <span className="rangestats__total">
-        Диапазон: <b>{stats.total}%</b>
+        Range: <b>{stats.total}%</b>
       </span>
-      <span className="rangestats__combos">{stats.combos} / 1326 комбо</span>
+      <span className="rangestats__combos">{stats.combos} / 1326 combos</span>
       {actions.map(([action, pct]) => {
         const def = ACTION_DEFS[action as keyof typeof ACTION_DEFS]
         return (

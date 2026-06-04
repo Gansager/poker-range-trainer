@@ -119,7 +119,7 @@ export const useRangesStore = create<RangesState>()(
             ...st.snapshots,
             {
               id: `snap-${Date.now()}-${++snapshotCounter}`,
-              name: name.trim() || `Снимок ${st.snapshots.length + 1}`,
+              name: name.trim() || `Snapshot ${st.snapshots.length + 1}`,
               savedAt: Date.now(),
               data: structuredClone(st.data),
             },
