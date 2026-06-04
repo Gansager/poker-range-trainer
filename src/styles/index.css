@@ -269,6 +269,15 @@ body {
   height: auto;
   border-radius: 8px;
 }
+/* Картинка книги: вписываем в экран, увеличенная относительно текста */
+.lightbox__fit {
+  max-width: 96vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  cursor: zoom-out;
+}
 
 /* ───────── Matrix ───────── */
 .matrix {
@@ -891,6 +900,7 @@ input[type='range'] {
   margin: 12px 0;
   border-radius: 8px;
   border: 1px solid var(--border);
+  cursor: zoom-in;
 }
 .book__content ul,
 .book__content ol {

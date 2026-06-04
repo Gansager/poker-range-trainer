@@ -14,6 +14,7 @@ export function Book() {
   const [query, setQuery] = useState('')
   const [tocOpen, setTocOpen] = useState(false)
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
+  const [zoom, setZoom] = useState<string | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -53,6 +54,11 @@ export function Book() {
     const el = contentRef.current?.querySelector('#' + CSS.escape(id))
     el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     setTocOpen(false)
+  }
+
+  function onContentClick(e: React.MouseEvent) {
+    const t = e.target as HTMLElement
+    if (t.tagName === 'IMG') setZoom((t as HTMLImageElement).src)
   }
 
   function toggle(id: string) {
@@ -130,7 +136,26 @@ export function Book() {
         </ul>
       </aside>
 
-      <div className="book__content" ref={contentRef} dangerouslySetInnerHTML={{ __html: html }} />
+      <div
+        className="book__content"
+        ref={contentRef}
+        onClick={onContentClick}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+
+      {zoom && (
+        <div className="lightbox" onClick={() => setZoom(null)}>
+          <div className="lightbox__bar">
+            <span className="lightbox__title">Image</span>
+            <button className="lightbox__close" onClick={() => setZoom(null)}>
+              ✕
+            </button>
+          </div>
+          <div className="lightbox__scroll" onClick={(e) => e.stopPropagation()}>
+            <img className="lightbox__fit" src={zoom} alt="" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
