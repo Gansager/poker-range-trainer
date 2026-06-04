@@ -309,6 +309,14 @@ body {
   pointer-events: none;
   line-height: 1;
 }
+/* Светлый контур у подписи на закрашенных ячейках — читается и на тёмной фолд-доле (частота <50%). */
+.cell:not(.cell--empty) .cell__label {
+  text-shadow:
+    -1px -1px 0 rgba(255, 255, 255, 0.9),
+    1px -1px 0 rgba(255, 255, 255, 0.9),
+    -1px 1px 0 rgba(255, 255, 255, 0.9),
+    1px 1px 0 rgba(255, 255, 255, 0.9);
+}
 
 /* Статусы после Check */
 .cell--correct {
