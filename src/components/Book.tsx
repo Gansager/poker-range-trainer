@@ -13,6 +13,7 @@ export function Book() {
   const [error, setError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
   const [tocOpen, setTocOpen] = useState(false)
+  const [expanded, setExpanded] = useState<Set<string>>(new Set())
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -37,14 +38,45 @@ export function Book() {
     return toc.filter((e) => e.text.toLowerCase().includes(q))
   }, [toc, query])
 
+  // Какие главы (level 1) имеют вложенные пункты.
+  const hasChildren = useMemo(() => {
+    const set = new Set<string>()
+    for (let i = 0; i < toc.length; i++) {
+      if (toc[i].level === 1 && toc[i + 1] && toc[i + 1].level > 1) set.add(toc[i].id)
+    }
+    return set
+  }, [toc])
+
+  const searching = query.trim().length > 0
+
   function goto(id: string) {
     const el = contentRef.current?.querySelector('#' + CSS.escape(id))
     el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     setTocOpen(false)
   }
 
-  if (error) return <div className="book__msg">Не удалось загрузить книгу: {error}</div>
-  if (html === null) return <div className="book__msg">Загрузка книги…</div>
+  function toggle(id: string) {
+    setExpanded((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }
+
+  if (error) return <div className="book__msg">Failed to load the book: {error}</div>
+  if (html === null) return <div className="book__msg">Loading book…</div>
+
+  // Построение видимого списка с учётом сворачивания глав.
+  const rows: TocEntry[] = []
+  let curChapter: string | null = null
+  for (const e of filtered) {
+    if (e.level === 1) {
+      curChapter = e.id
+      rows.push(e)
+    } else if (searching || (curChapter && expanded.has(curChapter))) {
+      rows.push(e)
+    }
+  }
 
   return (
     <div className={`book ${tocOpen ? 'book--toc-open' : ''}`}>
@@ -61,11 +93,40 @@ export function Book() {
           onChange={(e) => setQuery(e.target.value)}
         />
         <ul className="book__toc-list">
-          {filtered.map((e) => (
-            <li key={e.id} className={`book__toc-item lvl-${e.level}`}>
-              <button onClick={() => goto(e.id)}>{e.text}</button>
-            </li>
-          ))}
+          {rows.map((e) => {
+            if (e.level === 1) {
+              const open = searching || expanded.has(e.id)
+              const kids = hasChildren.has(e.id)
+              return (
+                <li key={e.id} className="book__toc-item lvl-1">
+                  <div className="book__chapter">
+                    <button
+                      className="book__chevron"
+                      aria-label={open ? 'collapse' : 'expand'}
+                      disabled={!kids}
+                      onClick={() => kids && toggle(e.id)}
+                    >
+                      {kids ? (open ? '▾' : '▸') : '·'}
+                    </button>
+                    <button
+                      className="book__chapter-title"
+                      onClick={() => {
+                        goto(e.id)
+                        if (kids && !expanded.has(e.id)) toggle(e.id)
+                      }}
+                    >
+                      {e.text}
+                    </button>
+                  </div>
+                </li>
+              )
+            }
+            return (
+              <li key={e.id} className={`book__toc-item lvl-${e.level}`}>
+                <button onClick={() => goto(e.id)}>{e.text}</button>
+              </li>
+            )
+          })}
         </ul>
       </aside>
 

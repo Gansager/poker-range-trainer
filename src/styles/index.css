@@ -801,7 +801,29 @@ input[type='range'] {
 .book__toc-item.lvl-1 button {
   color: var(--text);
   font-weight: 700;
+}
+.book__chapter {
+  display: flex;
+  align-items: center;
+  gap: 2px;
   margin-top: 6px;
+}
+.book__chevron {
+  flex: 0 0 20px; /* basis 20px переопределяет базовый width:100% в флексе */
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 5px 0;
+  cursor: pointer;
+}
+.book__chevron:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.book__chapter-title {
+  flex: 1 1 0;
+  min-width: 0;
 }
 .book__toc-item.lvl-2 button {
   padding-left: 14px;
