@@ -12,9 +12,8 @@ import { ResultSummary } from './components/ResultSummary'
 import { EditorPanel } from './components/EditorPanel'
 import { ChartReference } from './components/ChartReference'
 import { RangeStats } from './components/RangeStats'
-import { Book } from './components/Book'
 
-type Mode = 'train' | 'edit' | 'book'
+type Mode = 'train' | 'edit'
 
 function hasReferenceData(matrix: MatrixData): boolean {
   return Object.values(matrix).some(hasAction)
@@ -133,19 +132,9 @@ export default function App() {
           >
             Editor
           </button>
-          <button
-            className={`mode ${mode === 'book' ? 'mode--active' : ''}`}
-            onClick={() => setMode('book')}
-          >
-            📖 Book
-          </button>
         </div>
       </header>
 
-      {mode === 'book' ? (
-        <Book />
-      ) : (
-        <>
       <Tabs categories={categories} activeId={category.id} onSelect={selectCategory} />
       <SpotSelector spots={category.spots} activeId={spot.id} onSelect={setSpotId} />
 
@@ -225,8 +214,6 @@ export default function App() {
           <EditorPanel categoryId={category.id} spot={spot} onSpotsChanged={onSpotsChanged} />
         )}
       </main>
-        </>
-      )}
     </div>
   )
 }
