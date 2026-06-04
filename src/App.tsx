@@ -11,6 +11,7 @@ import { CheckBar } from './components/CheckBar'
 import { ResultSummary } from './components/ResultSummary'
 import { EditorPanel } from './components/EditorPanel'
 import { ChartReference } from './components/ChartReference'
+import { RangeStats } from './components/RangeStats'
 
 type Mode = 'train' | 'edit'
 
@@ -162,6 +163,8 @@ export default function App() {
           onPaint={handlePaint}
           onErase={handleErase}
         />
+
+        <RangeStats matrix={displayedMatrix} />
 
         {mode === 'train' ? (
           <>
